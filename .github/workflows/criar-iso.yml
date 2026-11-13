@@ -1,18 +1,32 @@
-name: Criar CL OS ISO
+name: Criar CL OS ISO de Verdade
 on: [push]
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Criar ISO do CL OS
+      - name: Baixar Ubuntu e criar CL OS
         run: |
           sudo apt update
-          sudo apt install -y xorriso
-          mkdir -p iso/CL_OS
-          cp -r CL_OS+Gamers/* iso/CL_OS/
-          cp CL_OS+Gamers/instalar.sh iso/
-          xorriso -as mkisofs -o CL-OS.iso -V "CL_OS" iso/
+          sudo apt install -y xorriso isolinux syslinux-utils
+          # Baixa o Ubuntu base
+          wget -O ubuntu.iso https://releases.ubuntu.com/24.04/ubuntu-24.04-desktop-amd64.iso
+          # Abre o Ubuntu
+          mkdir -p ubuntu_origem iso_novo
+          sudo mount -o loop ubuntu.iso ubuntu_origem
+          cp -r ubuntu_origem/* iso_novo/
+          sudo umount ubuntu_origem
+          # Coloca SEUS arquivos dentro do ISO
+          mkdir -p iso_novo/CL_OS
+          cp instalar.sh OS.py protetor.py iso_novo/CL_OS/
+          # Cria um instalador automático pro CL OS
+          echo '#!/bin/bash
+          cp -r /cdrom/CL_OS /home/ubuntu/CL_OS
+          chmod +x /home/ubuntu/CL_OS/instalar.sh
+          echo "CL OS Instalado!"
+          ' > iso_novo/CL_OS/instalar-automatico.sh
+          # Recria o ISO bootavel
+          xorriso -as mkisofs -o CL-OS.iso -V "CL_OS" -J -R -b isolinux/isolinux.bin -c isolinux/boot.cat -no-emul-boot -boot-load-size 4 -boot-info-table iso_novo/
           ls -lh CL-OS.iso
       - name: Salvar ISO
         uses: actions/upload-artifact@v4
