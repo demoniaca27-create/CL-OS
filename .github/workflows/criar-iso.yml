@@ -1,0 +1,21 @@
+name: Criar CL OS ISO
+on: [push]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Criar ISO do CL OS
+        run: |
+          sudo apt update
+          sudo apt install -y xorriso
+          mkdir -p iso/CL_OS
+          cp -r CL_OS+Gamers/* iso/CL_OS/
+          cp CL_OS+Gamers/instalar.sh iso/
+          xorriso -as mkisofs -o CL-OS.iso -V "CL_OS" iso/
+          ls -lh CL-OS.iso
+      - name: Salvar ISO
+        uses: actions/upload-artifact@v4
+        with:
+          name: CL-OS-ISO
+          path: CL-OS.iso
