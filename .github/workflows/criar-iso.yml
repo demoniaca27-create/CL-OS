@@ -9,7 +9,7 @@ jobs:
         run: |
           sudo apt update
           sudo apt install -y xorriso curl
-          curl -fL -A "Mozilla/5.0" -o ubuntu.iso https://releases.ubuntu.com/24.04.3/ubuntu-24.04.3-desktop-amd64.iso || curl -fL -A "Mozilla/5.0" -o ubuntu.iso https://cdimage.ubuntu.com/ubuntu/releases/24.04.3/release/ubuntu-24.04.3-desktop-amd64.iso
+          curl -fL -A "Mozilla/5.0" -o ubuntu.iso https://ftp.unicamp.br/pub/ubuntu-releases/24.04.3/ubuntu-24.04.3-desktop-amd64.iso || curl -fL -A "Mozilla/5.0" -o ubuntu.iso https://mirror.ufscar.br/ubuntu-releases/24.04.3/ubuntu-24.04.3-desktop-amd64.iso || curl -fL -A "Mozilla/5.0" -o ubuntu.iso https://releases.ubuntu.com/noble/ubuntu-24.04.3-desktop-amd64.iso
           ls -lh ubuntu.iso
           if [ $(stat -c%s ubuntu.iso) -lt 1000000000 ]; then echo "ARQUIVO MUITO PEQUENO, FALHOU!"; exit 1; fi
           xorriso -indev ubuntu.iso -outdev CL-OS.iso -map "CL_OS+Gamers" /CL_OS -boot_image any replay
