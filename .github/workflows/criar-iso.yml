@@ -9,10 +9,11 @@ jobs:
         run: |
           sudo apt update
           sudo apt install -y xorriso
-          ls -R
+          ls -la
+          ls -la "CL_OS+Gamers" || ls -la CL_OS*
           wget -O ubuntu.iso https://releases.ubuntu.com/24.04/ubuntu-24.04-desktop-amd64.iso
-          # Copia o Ubuntu e joga sua pasta dentro, mantendo ele bootavel
-          xorriso -indev ubuntu.iso -outdev CL-OS.iso -map CL_OS+Gamers /CL_OS -boot_image any replay
+          ls -lh ubuntu.iso
+          xorriso -indev ubuntu.iso -outdev CL-OS.iso -map "CL_OS+Gamers" /CL_OS -boot_image any replay
           ls -lh CL-OS.iso
       - name: Salvar ISO
         uses: actions/upload-artifact@v4
