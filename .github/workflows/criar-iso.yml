@@ -9,9 +9,7 @@ jobs:
         run: |
           sudo apt update
           sudo apt install -y xorriso
-          ls -la
-          ls -la "CL_OS+Gamers" || ls -la CL_OS*
-          wget -O ubuntu.iso https://releases.ubuntu.com/24.04/ubuntu-24.04-desktop-amd64.iso
+          wget -O ubuntu.iso https://releases.ubuntu.com/24.04.3/ubuntu-24.04.3-desktop-amd64.iso
           ls -lh ubuntu.iso
           xorriso -indev ubuntu.iso -outdev CL-OS.iso -map "CL_OS+Gamers" /CL_OS -boot_image any replay
           ls -lh CL-OS.iso
